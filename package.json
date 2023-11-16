@@ -1,0 +1,22 @@
+{
+  "name": "dalle-hangman",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RIT-New-Media-Capstone/Dalle-Hangman.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RIT-New-Media-Capstone/Dalle-Hangman/issues"
+  },
+  "homepage": "https://github.com/RIT-New-Media-Capstone/Dalle-Hangman#readme",
+  "dependencies": {
+    "openai": "^4.0.0"
+  }
+}
