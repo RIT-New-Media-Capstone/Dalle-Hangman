@@ -6,12 +6,14 @@ const wordList = [
   "playstation",
   "crazy",
   "supercalifragilisticexpialidocious",
-]; // Add more words as needed. The last one is to test longer words.
+];
 
 /*  Array that stores the words the player needs to guess in the current game.
-    Varies based on the difficulty
-    Using preselected values currently in the demo
-    In the final version, Olivia will populate this array with the results from Chat GPT*/
+Varies based on the difficulty
+Using preselected values currently in the demo
+In the final version, Olivia will populate this array with the results from Chat GPT
+...... at which point you probably don't want it to be a const. */
+
 let currentWords = [];
 
 /*  Array which will be filled with arrays.
@@ -22,38 +24,30 @@ let currentWords = [];
     for each specific word they are trying to guess. */
 let currentGuesses = [];
 
-/*  
-     This variable determines the maximum number of guesses a player can make for each word.
-     It is set based on the difficulty level chosen at the start of the game. 
-     For instance, in an Easy game, you might allow more guesses (e.g., 6 guesses), 
-     whereas in a Hard game, you might limit it to fewer guesses (e.g., 3 guesses). 
-     This variable is crucial for controlling the game's difficulty and ensuring that the number of 
-     guesses is consistent for each word the player is trying to guess.
-*/
-let maxGuesses;
-
-// Start the game with a difficulty setting
+// Start the game with a difficulty setting screen, this currently does not disappear even though it should
+// Change these values if you need to, number of words for each difficulty decided here
+// Call to setup game board also happens here
 function startGame(difficulty) {
+  let numberOfWords;
   switch (difficulty) {
     case "easy":
-      maxGuesses = 6;
-      currentWords = selectRandomWords(1);
+      numberOfWords = 1;
       break;
     case "medium":
-      maxGuesses = 4;
-      currentWords = selectRandomWords(3);
+      numberOfWords = 3;
       break;
     case "hard":
-      maxGuesses = 3;
-      currentWords = selectRandomWords(5);
+      numberOfWords = 5;
       break;
   }
 
+  currentWords = selectRandomWords(numberOfWords);
   currentGuesses = currentWords.map(() => []);
   setupGameBoard();
 }
 
 // Select random words from the list
+// Absolutely useless for y'all. Its for testing. Delete this function in final version and replace with Chat GPT
 function selectRandomWords(numberOfWords) {
   let selectedWords = [];
   for (let i = 0; i < numberOfWords; i++) {
@@ -63,7 +57,7 @@ function selectRandomWords(numberOfWords) {
   return selectedWords;
 }
 
-// Set up the game board with input fields for guessing
+// Set up the game board with initial input fields
 function setupGameBoard() {
   let gameBoard = document.getElementById("gameBoard");
   gameBoard.innerHTML = ""; // Clear previous game board
@@ -71,16 +65,8 @@ function setupGameBoard() {
   currentWords.forEach((word, index) => {
     let wordContainer = document.createElement("div");
     wordContainer.id = `word-${index}`;
-    for (let i = 0; i < maxGuesses; i++) {
-      let row = document.createElement("div");
-      for (let j = 0; j < word.length; j++) {
-        let cell = document.createElement("input");
-        cell.type = "text";
-        cell.maxLength = 1;
-        row.appendChild(cell);
-      }
-      wordContainer.appendChild(row);
-    }
+    let row = createInputRow(word.length);
+    wordContainer.appendChild(row);
     gameBoard.appendChild(wordContainer);
   });
 
@@ -91,11 +77,37 @@ function setupGameBoard() {
   gameBoard.appendChild(submitButton);
 }
 
+// Create a row of input boxes
+// Modified this by adding an event listener so that you can actually type smoothly and not have to click or press tab
+function createInputRow(wordLength) {
+  let row = document.createElement("div");
+  for (let j = 0; j < wordLength; j++) {
+    let cell = document.createElement("input");
+    cell.type = "text";
+    cell.maxLength = 1;
+    cell.style.width = "20px"; // Again, this is UI stuff. Raine will probably replace it with something much prettier
+
+    // Add an event listener to move focus to the next input box
+    cell.addEventListener("input", (event) => {
+      if (event.target.value.length === event.target.maxLength) {
+        let nextCell = event.target.nextElementSibling;
+        if (nextCell) {
+          nextCell.focus();
+        }
+      }
+    });
+
+    row.appendChild(cell);
+  }
+  return row;
+}
+
 // Handle the guess and update the game board
 function handleGuess() {
   currentWords.forEach((word, index) => {
     let wordContainer = document.getElementById(`word-${index}`);
-    let inputs = wordContainer.getElementsByTagName("input");
+    let lastRow = wordContainer.lastChild;
+    let inputs = lastRow.getElementsByTagName("input");
     let guess = Array.from(inputs)
       .map((input) => input.value)
       .join("");
@@ -103,6 +115,9 @@ function handleGuess() {
     if (guess.length === word.length) {
       currentGuesses[index].push(guess);
       updateUI(word, guess, index);
+      if (guess !== word) {
+        wordContainer.appendChild(createInputRow(word.length)); // Add a new row for the next guess
+      }
     } else {
       alert("Please enter a complete guess.");
     }
@@ -113,20 +128,22 @@ function handleGuess() {
 function updateUI(word, guess, wordIndex) {
   let wordContainer = document.getElementById(`word-${wordIndex}`);
   let guessIndex = currentGuesses[wordIndex].length - 1;
-  let inputs =
-    wordContainer.childNodes[guessIndex].getElementsByTagName("input");
 
-  for (let i = 0; i < guess.length; i++) {
-    if (word[i] === guess[i]) {
-      inputs[i].style.backgroundColor = "green";
-    } else if (word.includes(guess[i])) {
-      inputs[i].style.backgroundColor = "yellow";
-    } else {
-      inputs[i].style.backgroundColor = "red";
+  // Ensure the guessIndex is within the bounds of childNodes
+  if (guessIndex < wordContainer.childNodes.length) {
+    let inputs =
+      wordContainer.childNodes[guessIndex].getElementsByTagName("input");
+
+    for (let i = 0; i < guess.length; i++) {
+      if (word[i] === guess[i]) {
+        inputs[i].style.backgroundColor = "green";
+      } else if (word.includes(guess[i])) {
+        inputs[i].style.backgroundColor = "yellow";
+      } else {
+        inputs[i].style.backgroundColor = "gray";
+      }
     }
+  } else {
+    console.error("Error: guessIndex out of bounds in updateUI");
   }
-
-  // Additional logic to check game status can be implemented here
 }
-
-// Additional game logic functions can be added here
