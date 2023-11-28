@@ -1,5 +1,5 @@
-import OpenAI from "openai";
-//import OpenAI from "../node_modules/openai/";
+//import OpenAI from "openai";
+import OpenAI from "../node_modules/openai/";
 
 let answer=[];
 const wordsToRemove = ['Create', 'an', 'scene', 'of','a'];
@@ -32,12 +32,7 @@ async function textGen(numWords, playerPrompt) {
 function removeWords(wordsToRemove, answer) {
   for (let i = 0; i < wordsToRemove.length; i++) {
     answer = answer.filter((word) => word !== wordsToRemove[i]);
-    console.log(answer);
+    //console.log(answer);
   }
 }
 textGen(10, "a cute baby sea otter");
-
-
-
-
-
