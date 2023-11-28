@@ -1,4 +1,4 @@
-# Dalle-Hangman
+# Dalle-Wordle
 Raine Taber, Olivia Lewis, Tarnav Bhasin
 
 # Overview
