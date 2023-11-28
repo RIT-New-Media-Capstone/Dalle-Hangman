@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+//import OpenAI from "../node_modules/openai/";
 
 let answer=[];
 const wordsToRemove = ['Create', 'an', 'scene', 'of','a'];
