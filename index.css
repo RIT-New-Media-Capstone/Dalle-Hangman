@@ -1,6 +1,7 @@
 html{
     background-color: rgb(238, 246, 247);
     font-family: 'Poppins', sans-serif;
+    
 }
 #startup-state{
     top:10vh;
@@ -28,6 +29,7 @@ h1{
     justify-content: center;
     /* background-color: lightcoral; */
     padding:5px;
+    font-size: 1.2rem;
 }
 
 button{

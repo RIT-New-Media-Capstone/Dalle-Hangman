@@ -86,7 +86,7 @@ const wordList = [
       wordContainer.style.borderRadius = '5px';
       wordContainer.style.padding = '5px';
       wordContainer.style.marginBottom = '5px';
-      wordContainer.style.marginRight = '10px';
+      wordContainer.style.marginRight = '4rem';
       wordContainer.style.borderStyle = 'none';
       let row = createInputRow(word.length);
       wordContainer.appendChild(row);
@@ -105,8 +105,11 @@ const wordList = [
       let cell = document.createElement("input");
       cell.type = "text";
       cell.maxLength = 1;
+      //UI changes to style each box and make it nice
       cell.style.margin = '0rem;'
-      cell.style.width = "1rem"; // Again, this is UI stuff. Raine will probably replace it with something much prettier
+      cell.style.width = "1.2rem"; 
+      cell.style.height = '1.2rem';
+      cell.style.fontSize = '1.2rem';
       cell.style.borderTopStyle = 'none';
       cell.style.borderBottomStyle = 'none';
       cell.style.borderLeftWidth = '0.01rem';
