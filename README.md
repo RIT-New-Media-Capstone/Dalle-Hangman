@@ -15,6 +15,11 @@ Dalle-Wordle is an application that seamlessly merges the capabilities of OpenAI
 
 
 ### How to Run
+* After pulling from main, navigate to src/index.js
+* At line 180 of index.js, replace 'openaiApiKey' with your own OpenAI key
+  * A key can be made at https://platform.openai.com/api-keys
+* Navigate to index.html and run live server
 
 # Resources
--https://platform.openai.com/docs/overview
+* https://platform.openai.com/docs/overview
+* https://platform.openai.com/api-keys
